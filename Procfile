@@ -1,0 +1,1 @@
+web: gunicorn jasalarium_logger.wsgi --log-file -
