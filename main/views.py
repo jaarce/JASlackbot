@@ -58,7 +58,7 @@ class SlackBotView(View):
         return response['account_token']
 
 
-def JABotsView(View):
+class JABotsView(View):
 
     @method_decorator(csrf_exempt)
     def dispatch(self, *args, **kwargs):
