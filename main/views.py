@@ -12,4 +12,6 @@ class SlackBotView(View):
         return super(SlackBotView, self).dispatch(*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        return JsonResponse({'text': 'African or European?'})
+        data = request.POST
+
+        return JsonResponse({'text': data['user_name']})
