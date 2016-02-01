@@ -69,6 +69,7 @@ class JABotsView(View):
         data = request.POST
         keyword = ' '.join(data['text'].split(' ')[0:])
         print keyword
+        message = ""
         if keyword == 'pug me' or 'pug' in keyword:
             response = requests.get('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=515e81eaff9cb3f524806bc77b503ba3&text=dog%20pugs&format=json&nojsoncallback=1')
             response = json.loads(response.content)
@@ -78,5 +79,8 @@ class JABotsView(View):
             image_id = response['photos']['photo'][index]['id']
             message = 'https://www.flickr.com/photos/%s/%s' % (owner, image_id)
 
-
-        return JsonResponse({'text': message})
+        return JsonResponse({
+            'response_type': 'in_channel',
+            'text': 'JA says',
+            'attachments': [{'text': message}]
+        })
