@@ -17,12 +17,14 @@ class SlackBotView(View):
 
     def post(self, request, *args, **kwargs):
         data = request.POST
-        return JsonResponse({'text': data['user_name']})
+
         user = get_object_or_404(Employee, user__username=data['user_name'])
         user_data = {
             'email': user.user.email,
             'password': user.salarium_password
         }
+
+        return JsonResponse({'text': data['user_name']})
 
         response = requests.post('https://app.salarium.com/api/bundy_admin/register_device', user_data)
         response = json.loads(response.content)
