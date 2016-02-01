@@ -5,6 +5,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 import json
+import random
 
 from main.models import Employee
 
@@ -66,6 +67,14 @@ class JABotsView(View):
 
     def post(self, request, *args, **kwargs):
         data = request.POST
-        print data['text']
+        keyword = ' '.join(data['text'].split(' ')[1:])
+        if keyword == 'pug me' or 'pug' in keyword:
+            response = requests.get('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=515e81eaff9cb3f524806bc77b503ba3&text=dog%20pugs&format=json&nojsoncallback=1')
+            response = json.loads(response.content)
+            # random from 1 to 100
+            index = random.randint(0, 99)
+            owner = response['photos']['photo'][index]['owner']
+            image_id = response['photos']['photo'][index]['id']
+            message = 'https://www.flickr.com/photos/%s/%s' % (owner, image_id)
 
-        return JsonResponse({'text': 'wow'})
+        return JsonResponse({'text': message})
