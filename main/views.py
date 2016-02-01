@@ -69,18 +69,22 @@ class JABotsView(View):
         data = request.POST
         keyword = ' '.join(data['text'].split(' ')[0:])
         print keyword
-        message = ""
+        message = {'text': 'Hi!'}
+        page = random.randint(0, 3000)
         if keyword == 'pug me' or 'pug' in keyword:
-            response = requests.get('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=515e81eaff9cb3f524806bc77b503ba3&text=dog%20pugs&format=json&nojsoncallback=1')
+            response = requests.get('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=515e81eaff9cb3f524806bc77b503ba3&text=dog%20pugs&format=json&page=%snojsoncallback=1' % page)
             response = json.loads(response.content)
             # random from 1 to 100
             index = random.randint(0, 99)
             owner = response['photos']['photo'][index]['owner']
             image_id = response['photos']['photo'][index]['id']
-            message = 'https://www.flickr.com/photos/%s/%s' % (owner, image_id)
+            farm = response['photos']['photo'][index]['farm']
+            secret = response['photos']['photo'][index]['secret']
+            server = response['photos']['photo'][index]['server']
+            message = {'image_url': 'https://c2.staticflickr.com/%d/%s/%s_%s.jpg' % (farm, server, image_id, secret)}
 
         return JsonResponse({
             'response_type': 'in_channel',
             'text': 'JA says',
-            'attachments': [{'text': message}]
+            'attachments': [message]
         })
