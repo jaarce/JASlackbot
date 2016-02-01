@@ -24,7 +24,6 @@ class SlackBotView(View):
             'password': user.salarium_password
         }
 
-        return JsonResponse({'text': data['user_name']})
 
         response = requests.post('https://app.salarium.com/api/bundy_admin/register_device', user_data)
         response = json.loads(response.content)
