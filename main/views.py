@@ -56,3 +56,16 @@ class SlackBotView(View):
         response = requests.post('https://app.salarium.com/api/bundy_admin/register_device', user_data)
         response = json.loads(response.content)
         return response['account_token']
+
+
+def JABotsView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super(SlackBotView, self).dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = request.POST
+        print data['text']
+
+        return JsonResponse({'text': 'wow'})
