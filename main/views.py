@@ -65,8 +65,8 @@ class JABotsView(View):
     def dispatch(self, *args, **kwargs):
         return super(JABotsView, self).dispatch(*args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        data = request.POST
+    def get(self, request, *args, **kwargs):
+        data = request.GET
         keyword = ' '.join(data['text'].split(' ')[0:])
         message = {'text': 'Hi!'}
         page = random.randint(0, 3000)
@@ -80,8 +80,12 @@ class JABotsView(View):
             farm = response['photos']['photo'][index]['farm']
             secret = response['photos']['photo'][index]['secret']
             server = response['photos']['photo'][index]['server']
-            message = {'image_url': 'https://c2.staticflickr.com/%d/%s/%s_%s.jpg' % (farm, server, image_id, secret)}
-
+            message = {
+                'fallback': 'Cute pugs everywhere',
+                'title': 'Pugs everywhere!',
+                'text': 'Here\'s your pug!',
+                'image_url': 'https://c2.staticflickr.com/%d/%s/%s_%s.jpg' % (farm, server, image_id, secret)
+            }
         return JsonResponse({
             'response_type': 'in_channel',
             'text': 'JA says',
