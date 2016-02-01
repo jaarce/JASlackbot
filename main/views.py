@@ -65,14 +65,13 @@ class JABotsView(View):
     def dispatch(self, *args, **kwargs):
         return super(JABotsView, self).dispatch(*args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        data = request.POST
+    def get(self, request, *args, **kwargs):
+        data = request.GET
         keyword = ' '.join(data['text'].split(' ')[0:])
-        print keyword
         message = {'text': 'Hi!'}
         page = random.randint(0, 3000)
         if keyword == 'pug me' or 'pug' in keyword:
-            response = requests.get('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=515e81eaff9cb3f524806bc77b503ba3&text=dog%20pugs&format=json&page=%snojsoncallback=1' % page)
+            response = requests.get('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=515e81eaff9cb3f524806bc77b503ba3&text=dog%20pugs&format=json&page=' + str(page) + '&nojsoncallback=1')
             response = json.loads(response.content)
             # random from 1 to 100
             index = random.randint(0, 99)
