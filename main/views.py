@@ -62,7 +62,7 @@ class JABotsView(View):
 
     @method_decorator(csrf_exempt)
     def dispatch(self, *args, **kwargs):
-        return super(SlackBotView, self).dispatch(*args, **kwargs)
+        return super(JABotsView, self).dispatch(*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         data = request.POST
