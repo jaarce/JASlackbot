@@ -19,17 +19,9 @@ class SlackBotView(View):
         data = request.POST
 
         user = get_object_or_404(Employee, user__username=data['user_name'])
-        user_data = {
-            'email': user.user.email,
-            'password': user.salarium_password
-        }
 
-
-        response = requests.post('https://app.salarium.com/api/bundy_admin/register_device', user_data)
-        response = json.loads(response.content)
-
-        token = response['account_token']
-        company_id = response['companies'][0]['company_id']
+        token = "639f78bbda52d6edb7f18d52302ea7e6"
+        company_id = '2'
         employee_id = user.employee_id
 
         clock_in_data = {
@@ -39,8 +31,28 @@ class SlackBotView(View):
         }
 
         clock_in = requests.post('https://app.salarium.com/api/bundy/clock', clock_in_data)
+        if json.loads(clock_in.content)['status'] == 0:
+            token = self.get_account_token()
+            clock_in_data = {
+                'token': token,
+                'company_id': company_id,
+                'employee_id': employee_id
+            }
+
+            clock_in = requests.post('https://app.salarium.com/api/bundy/clock', clock_in_data)
+
         clock_in = json.loads(clock_in.content)
         status = 'in'
         if clock_in['time_out']:
             status = 'out'
         return JsonResponse({'text': '%s is logged %s' % (clock_in['employee_full_name'], status)})
+
+    def get_account_token(self):
+        user_data = {
+            'email': 'ja@directworksmedia.com',
+            'password': 'Ferower25'
+        }
+
+        response = requests.post('https://app.salarium.com/api/bundy_admin/register_device', user_data)
+        response = json.loads(response.content)
+        return response['account_token']
