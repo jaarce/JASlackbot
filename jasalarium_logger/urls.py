@@ -1,10 +1,9 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 
-urlpatterns = [
-    # Examples:
-    # url(r'^$', 'jasalarium_logger.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
+from main.views import SlackBotView
 
+urlpatterns = [
+    url(r'^log/$', SlackBotView.as_view()),
     url(r'^admin/', include(admin.site.urls)),
 ]
