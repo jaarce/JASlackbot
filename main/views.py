@@ -17,7 +17,7 @@ class SlackBotView(View):
 
     def post(self, request, *args, **kwargs):
         data = request.POST
-        return JsonResponse({'text': 'wow'})
+        return JsonResponse({'text': data['user_name']})
         user = get_object_or_404(Employee, user__username=data['user_name'])
         user_data = {
             'email': user.user.email,
