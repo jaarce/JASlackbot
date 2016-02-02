@@ -65,8 +65,8 @@ class JABotsView(View):
     def dispatch(self, *args, **kwargs):
         return super(JABotsView, self).dispatch(*args, **kwargs)
 
-    def get(self, request, *args, **kwargs):
-        data = request.GET
+    def post(self, request, *args, **kwargs):
+        data = request.POST
         keyword = ' '.join(data['text'].split(' ')[0:])
         message = {'text': 'Hi!'}
         from plugins import food, pug, refresh
