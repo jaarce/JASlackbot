@@ -69,11 +69,12 @@ class JABotsView(View):
         data = request.POST
         keyword = ' '.join(data['text'].split(' ')[0:])
         message = {'text': 'Hi!'}
-        from plugins import food, pug, refresh
+        from plugins import food, pug, refresh, gif_translate
 
         message = pug.japlugin(keyword, message) if pug.japlugin(keyword, message) else message
         message = food.japlugin(keyword, message) if food.japlugin(keyword, message) else message
         message = refresh.japlugin(keyword, message) if refresh.japlugin(keyword, message) else message
+        message = gif_translate.japlugin(keyword, message) if gif_translate.japlugin(keyword, message) else message
 
         return JsonResponse({
             'response_type': 'in_channel',
