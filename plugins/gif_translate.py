@@ -9,7 +9,7 @@ def japlugin(keyword, message):
         return message
 
     trigger = keyword_arr[0]
-    text = keyword_arr[1]
+    text = ' '.join(keyword_arr[1:])
 
     if 'translate' in trigger:
         response = requests.get('http://api.giphy.com/v1/gifs/translate?s=' + text + '&api_key=dc6zaTOxFJmzC')
