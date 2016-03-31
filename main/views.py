@@ -46,7 +46,7 @@ class SlackBotView(View):
         status = 'in'
         if clock_in['time_out']:
             status = 'out'
-        return JsonResponse({'text': '%s loves JA so much.' % (clock_in['employee_full_name'], status)})
+        return JsonResponse({'text': '%s loves JA so much. %s' % (clock_in['employee_full_name'], status)})
 
     def get_account_token(self):
         user_data = {
